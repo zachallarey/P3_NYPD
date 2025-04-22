@@ -17,14 +17,16 @@ struct Node {
 vector<Node> nodes;
 vector<vector<pair<int, double>>> adjList;
 
-// Parse coordinates from string like "POINT (-73.79174966999994 40.72578303100005)"
+//parse coordinates from string like "POINT (-73.79174966999994 40.72578303100005)"
 Node parseCoordinates(const string& coordStr, int id) {
     double lon, lat;
     sscanf(coordStr.c_str(), "POINT (%lf %lf)", &lon, &lat);
     return {id, lon, lat};
 }
 
-// Use haversine formula for accurate geographic distance based on lat/lon
+//use haversine formula for accurate geographic distance based on lat/lon
+//the haversine formula calculate distance on a sphere
+//can change, juts used initially used this as a placeholder if we want to simplify
 const double EARTH_RADIUS_KM = 6371.0;
 double haversineDist(const Node& a, const Node& b) {
     double dLat = (b.lat - a.lat) * M_PI / 180.0;
@@ -38,7 +40,7 @@ double haversineDist(const Node& a, const Node& b) {
     return EARTH_RADIUS_KM * c;
 }
 
-// Build adjacency list by connecting each node to its k nearest neighbors
+//build adjacency list by connecting each node to its k nearest neighbors
 void buildAdjList(int k = 3) {
     adjList.resize(nodes.size());
     for (int i = 0; i < nodes.size(); i++) {
@@ -55,9 +57,13 @@ void buildAdjList(int k = 3) {
     }
 }
 
-// Load nodes from CSV file
+//load nodes from CSV file
 void importCSV(const string& filename) {
     ifstream file(filename);
+    if (!file.is_open()) {
+        cerr << "ERROR: Could not open file: " << filename << endl;
+        return;
+    }
     string line;
     getline(file, line); // skip header
     int id = 0;
@@ -71,7 +77,7 @@ void importCSV(const string& filename) {
 }
 
 int main() {
-    importCSV("NYC_Honorary_Street_Names_Map__Intersection_.csv");
+    importCSV("../data/map.csv");
     cout << "Imported " << nodes.size() << " nodes.\n";
 
     auto start = chrono::high_resolution_clock::now();
@@ -80,7 +86,7 @@ int main() {
     chrono::duration<double> duration = end - start;
     cout << "Adjacency List built in: " << duration.count() << " seconds\n";
 
-    // Print a sample of the adjacency list
+    //print a sample of the adjacency list
     cout << "\nSample connections from node 0:\n";
     for (auto& neighbor : adjList[0]) {
         cout << " -> Node " << neighbor.first << " (Distance: " << neighbor.second << " km)\n";
