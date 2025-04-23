@@ -1,3 +1,0 @@
-C:/Users/zach allarey/CLionProjects/P3_NYPD/cmake-build-debug/CMakeFiles/P3_NYPD.dir
-C:/Users/zach allarey/CLionProjects/P3_NYPD/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/zach allarey/CLionProjects/P3_NYPD/cmake-build-debug/CMakeFiles/rebuild_cache.dir
